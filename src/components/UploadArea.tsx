@@ -61,7 +61,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({ onFilesUploaded }) => {
   
   return (
     <div
-      className={`dropzone ${isDragActive ? "active" : ""}`}
+      className={`border-2 border-dashed border-primary/50 rounded-lg p-4 ${isDragActive ? "bg-primary/5 border-primary" : ""}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -81,7 +81,7 @@ const UploadArea: React.FC<UploadAreaProps> = ({ onFilesUploaded }) => {
           onChange={handleFileChange}
         />
         <label htmlFor="file-upload">
-          <Button as="span" variant="default">
+          <Button variant="default" className="cursor-pointer">
             Select Images
           </Button>
         </label>

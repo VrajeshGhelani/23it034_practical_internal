@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BarChart, ChartContainer, ChartTooltip, ChartBar } from "@/components/ui/chart";
+import { BarChart as RechartsBarChart, ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { AnalyticsData } from "@/types";
 import { formatBytes } from "@/lib/fileUtils";
 import { Trash2 } from "lucide-react";
@@ -73,17 +73,17 @@ const AnalyticsSummary: React.FC<AnalyticsSummaryProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="stat-card">
+        <div className="bg-white p-4 rounded-lg shadow">
           <p className="text-sm font-medium text-muted-foreground">Total Files Compressed</p>
           <p className="text-2xl font-bold">{data.totalCompressed}</p>
         </div>
         
-        <div className="stat-card">
+        <div className="bg-white p-4 rounded-lg shadow">
           <p className="text-sm font-medium text-muted-foreground">Storage Saved</p>
           <p className="text-2xl font-bold">{formatBytes(data.sizeSaved)}</p>
         </div>
         
-        <div className="stat-card">
+        <div className="bg-white p-4 rounded-lg shadow">
           <p className="text-sm font-medium text-muted-foreground">Average Compression</p>
           <p className="text-2xl font-bold">{data.averageCompression}%</p>
         </div>
@@ -93,26 +93,25 @@ const AnalyticsSummary: React.FC<AnalyticsSummaryProps> = ({
         <h3 className="text-lg font-medium mb-4">Compression History (Last 7 days)</h3>
         <div className="h-[300px]">
           {chartData.length > 0 ? (
-            <BarChart
-              data={chartData}
-              categories={["saved"]}
-              colors={["#00B0FF"]}
-              valueFormatter={(value) => `${value.toFixed(2)} MB`}
-              showAnimation
-              showXAxis
-              showYAxis
-              showLegend={false}
-            >
-              <ChartTooltip>
-                {({ category, value, itemData }) => (
-                  <div className="p-2">
-                    <div className="text-sm font-medium">{itemData.day}</div>
-                    <div className="text-sm">Saved: {value.toFixed(2)} MB</div>
-                    <div className="text-sm">Files: {itemData.count}</div>
-                  </div>
-                )}
-              </ChartTooltip>
-            </BarChart>
+            <ResponsiveContainer width="100%" height="100%">
+              <RechartsBarChart
+                data={chartData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis label={{ value: "MB Saved", angle: -90, position: "insideLeft" }} />
+                <Tooltip
+                  formatter={(value, name) => [
+                    `${Number(value).toFixed(2)} MB`,
+                    "Saved"
+                  ]}
+                  labelFormatter={(label) => `Date: ${label}`}
+                  contentStyle={{ backgroundColor: "white", borderRadius: "0.375rem" }}
+                />
+                <Bar dataKey="saved" fill="#00B0FF" name="MB Saved" />
+              </RechartsBarChart>
+            </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-muted-foreground">
               No compression data available yet

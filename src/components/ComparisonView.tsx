@@ -71,7 +71,7 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ imageFile }) => {
       <h3 className="text-lg font-medium mb-3">Before & After Comparison</h3>
       <div
         ref={containerRef}
-        className="comparison-slider"
+        className="relative overflow-hidden rounded-lg border border-gray-200"
         onMouseMove={handleMouseMove}
         onTouchMove={handleTouchMove}
       >
@@ -85,7 +85,7 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ imageFile }) => {
         ></div>
         
         <div
-          className="absolute top-0 left-0 bottom-0 z-1 overflow-hidden"
+          className="absolute top-0 left-0 bottom-0 z-10 overflow-hidden"
           style={{ width: `${position}%` }}
         >
           <div
@@ -100,17 +100,21 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ imageFile }) => {
         </div>
         
         <div
-          className="comparison-slider-handle"
+          className="absolute top-0 bottom-0 w-0.5 bg-white z-20 cursor-ew-resize"
           style={{ left: `${position}%` }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
-        ></div>
+        >
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center">
+            <div className="w-4 h-4 rounded-full bg-primary"></div>
+          </div>
+        </div>
         
         <div className="w-full pt-[75%] relative">
           {/* This div maintains the aspect ratio */}
         </div>
         
-        <div className="flex justify-between mt-2 text-xs font-medium">
+        <div className="flex justify-between mt-2 px-2 text-xs font-medium">
           <span>Compressed</span>
           <span>Original</span>
         </div>
